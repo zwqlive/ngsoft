@@ -24,6 +24,7 @@ public class Robot implements IClient {
 	private volatile boolean isConnected=false;
 	private ChannelHandlerContext context;
 	private ClientHandler clientHandler;
+	private Channel channel;
 	public Robot(){
 		bootstrap = new Bootstrap();
 		clientHandler = new ClientHandler();
@@ -44,12 +45,14 @@ public class Robot implements IClient {
 			}
 		});
 		ChannelFuture cf = bootstrap.connect(host, port);
+		channel = cf.channel();
 		try {
 			cf.sync();
 			context = cf.channel().pipeline().context(clientHandler);
 			isConnected=true;
 //			cf.channel().closeFuture().sync();
 		} catch (InterruptedException e) {
+			e.printStackTrace();
 			group.shutdownGracefully();
 		}
 		return this;
@@ -67,6 +70,10 @@ public class Robot implements IClient {
 	@Override
 	public ChannelHandlerContext context() {
 		return context;
+	}
+	@Override
+	public Channel channel() {
+		return channel;
 	}
 
 }

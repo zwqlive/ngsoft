@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.ngsoft.core.message.Message;
 import org.ngsoft.core.netty.handler.MessageHandler;
 import org.ngsoft.server.message.CSTestMessage;
+import org.ngsoft.server.message.SCTestMessage;
 
 public class GameServerSimpleHandler extends MessageHandler<CSTestMessage> {
 
@@ -26,12 +27,29 @@ public class GameServerSimpleHandler extends MessageHandler<CSTestMessage> {
     		System.out.println("can not recorgnize message");
     	}
     }
-
+    
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+    	ctx.flush();
+        System.out.println("server read complete");        
+    }
+    
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         // Close the connection when an exception is raised.
         logger.log(Level.WARN, "Unexpected exception from downstream.", cause);
         ctx.close();
+    }
+    
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        super.channelActive(ctx);
+        SCTestMessage scMsg = new SCTestMessage();
+        scMsg.setName("haha");
+        scMsg.setSendRoleId(10000000L);
+        scMsg.setAge(22);
+        ctx.write(scMsg);
+        ctx.flush();
     }
 
 	@Override

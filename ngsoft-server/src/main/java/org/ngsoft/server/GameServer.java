@@ -1,7 +1,6 @@
 package org.ngsoft.server;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -12,7 +11,9 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
 import org.ngsoft.core.netty.codec.ServerProtocolFactory;
+import org.ngsoft.core.netty.server.MessageRegistryService;
 import org.ngsoft.server.handler.GameServerSimpleHandler;
+import org.ngsoft.server.message.CSTestMessage;
 
 public class GameServer {
 	 private final int port;
@@ -42,14 +43,15 @@ public class GameServer {
 	                     ch.pipeline().addLast(new GameServerSimpleHandler());
 	                 }
 	             });
-
-	            ChannelFuture f = serverBootstrap.bind(port).sync();
-	            f.channel().closeFuture().sync();
-	        }catch(InterruptedException ex){
-	        	
-	        } finally {
-	            bossGroup.shutdownGracefully();
+	            serverBootstrap.bind(port);
+//	            ChannelFuture f = serverBootstrap.bind(port).sync();
+//	            f.channel().closeFuture().sync();
+	        }catch(Exception ex){
+	        	ex.printStackTrace();
+	        	bossGroup.shutdownGracefully();
 	            workerGroup.shutdownGracefully();
+	        } finally {
+	            
 	        }
 	    }
 	    
@@ -62,8 +64,13 @@ public class GameServer {
 	    	return serverBootstrap;
 	    }
 	    
+	    private static void registryMessage() {
+			MessageRegistryService.register(101101, CSTestMessage.class, GameServerSimpleHandler.class);		
+
+		}
 
 	    public static void main(String[] args) throws Exception {
+	    	registryMessage();
 	        int port=8020;	        
 	        new GameServer(port).start();
 	    }

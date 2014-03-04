@@ -21,6 +21,8 @@ public class ClientTestCommand implements ICommand {
 		CSTestMessage csMsg = new CSTestMessage();
 		csMsg.setPlayerId(1000001L);
 		context.channel().pipeline().write(csMsg);
+		context.channel().pipeline().flush();
+//		context.channel().write(csMsg);
 //		context.write(csMsg);
 	}
 

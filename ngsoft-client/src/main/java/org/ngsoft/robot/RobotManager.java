@@ -19,9 +19,7 @@ import org.ngsoft.robot.message.SCTestMessage;
 public class RobotManager {
 
 	private static void registryMessage() {
-		MessageRegistryService.register(101101, CSTestMessage.class, null);
 		MessageRegistryService.register(101201, SCTestMessage.class, ClientHandler.class);
-
 	}
 
 	public static void main(String[] args) {

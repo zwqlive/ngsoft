@@ -17,6 +17,13 @@ public class MessageRegistryService {
 	
 	public static Map<Integer,Class<? extends Message>> messageClasses = new HashMap<Integer, Class<? extends Message>>();
 	public static Map<Integer,Class<? extends IMessageHandler<? extends IMessage>>> handlerClasses = new HashMap<Integer, Class<? extends IMessageHandler<? extends IMessage>>>();
+	
+	/**
+	 * 注册消息处理器
+	 * @param messageId
+	 * @param msgClass
+	 * @param handlerClass
+	 */
 	public static void register(int messageId,Class<? extends Message> msgClass, Class<? extends IMessageHandler<? extends IMessage>>  handlerClass){
 		messageClasses.put(messageId, msgClass);
 		handlerClasses.put(messageId, handlerClass);
