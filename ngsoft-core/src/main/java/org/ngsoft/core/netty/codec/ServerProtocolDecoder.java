@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.ngsoft.core.common.Loggers;
 import org.ngsoft.core.message.Message;
-import org.ngsoft.core.netty.server.MessageRegistryService;
+import org.ngsoft.core.service.MessageRegistryService;
 import org.slf4j.Logger;
 
 /**

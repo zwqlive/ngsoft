@@ -58,7 +58,7 @@ public class ServerProtocolEncoder extends MessageToByteEncoder<IMessage>{
 				out.writeInt(size);
 				out.writeBytes(in);
 			}
-//			out.discardReadBytes();
+			out.discardReadBytes();
 			in.release();
 		}		
 	}

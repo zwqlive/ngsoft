@@ -1,4 +1,4 @@
-package org.ngsoft.server.message;
+package org.ngsoft.game.test.message;
 
 import io.netty.buffer.ByteBuf;
 

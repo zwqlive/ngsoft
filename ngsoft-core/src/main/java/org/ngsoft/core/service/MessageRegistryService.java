@@ -1,4 +1,4 @@
-package org.ngsoft.core.netty.server;
+package org.ngsoft.core.service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +39,8 @@ public class MessageRegistryService {
 	
 	public static IMessageHandler<? extends IMessage> getHandler(int msgId) throws InstantiationException, IllegalAccessException{
 		if(handlerClasses.containsKey(msgId)){
+			Class<? extends IMessageHandler<? extends IMessage>> handlerClass = handlerClasses.get(msgId);
+			handlerClass.newInstance();
 			return handlerClasses.get(msgId).newInstance();
 		}else{
 			return null;

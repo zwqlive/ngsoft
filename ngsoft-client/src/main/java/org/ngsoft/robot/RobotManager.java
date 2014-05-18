@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.ngsoft.core.netty.server.MessageRegistryService;
+import org.ngsoft.core.service.MessageRegistryService;
 import org.ngsoft.robot.command.ClientTestCommand;
 import org.ngsoft.robot.handler.ClientHandler;
-import org.ngsoft.robot.message.CSTestMessage;
+import org.ngsoft.robot.handler.SCTestHandler;
 import org.ngsoft.robot.message.SCTestMessage;
 
 /**
@@ -19,7 +19,7 @@ import org.ngsoft.robot.message.SCTestMessage;
 public class RobotManager {
 
 	private static void registryMessage() {
-		MessageRegistryService.register(101201, SCTestMessage.class, ClientHandler.class);
+		MessageRegistryService.register(101201, SCTestMessage.class, SCTestHandler.class);
 	}
 
 	public static void main(String[] args) {

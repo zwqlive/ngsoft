@@ -11,6 +11,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 import org.ngsoft.core.netty.codec.ServerProtocolFactory;
+import org.ngsoft.core.netty.handler.ChannelMessageHandler;
 import org.ngsoft.robot.handler.ClientHandler;
 
 /**
@@ -23,11 +24,11 @@ public class Robot implements IClient {
 	private Bootstrap bootstrap;
 	private volatile boolean isConnected=false;
 	private ChannelHandlerContext context;
-	private ClientHandler clientHandler;
+	private ChannelMessageHandler messageHandler;
 	private Channel channel;
 	public Robot(){
 		bootstrap = new Bootstrap();
-		clientHandler = new ClientHandler();
+		messageHandler = new ChannelMessageHandler();
 	}
 	@Override
 	public IClient connect(String host, int port) {
@@ -41,14 +42,14 @@ public class Robot implements IClient {
 			protected void initChannel(Channel ch) throws Exception {
 				ch.pipeline().addFirst(ServerProtocolFactory.getEncoder());
 				ch.pipeline().addFirst(ServerProtocolFactory.getDecoder());
-				ch.pipeline().addLast(clientHandler);
+				ch.pipeline().addLast(messageHandler);
 			}
 		});
 		ChannelFuture cf = bootstrap.connect(host, port);
 		channel = cf.channel();
 		try {
 			cf.sync();
-			context = cf.channel().pipeline().context(clientHandler);
+			context = cf.channel().pipeline().context(messageHandler);
 			isConnected=true;
 //			cf.channel().closeFuture().sync();
 		} catch (InterruptedException e) {

@@ -11,9 +11,10 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
 import org.ngsoft.core.netty.codec.ServerProtocolFactory;
-import org.ngsoft.core.netty.server.MessageRegistryService;
-import org.ngsoft.server.handler.GameServerSimpleHandler;
-import org.ngsoft.server.message.CSTestMessage;
+import org.ngsoft.core.netty.handler.ChannelMessageHandler;
+import org.ngsoft.core.service.MessageRegistryService;
+import org.ngsoft.game.test.handler.CSTestHandler;
+import org.ngsoft.game.test.message.CSTestMessage;
 
 public class GameServer {
 	 private final int port;
@@ -40,7 +41,7 @@ public class GameServer {
 	                 public void initChannel(SocketChannel ch) throws Exception {
 	                	 ch.pipeline().addLast(ServerProtocolFactory.getDecoder());
 	                	 ch.pipeline().addLast(ServerProtocolFactory.getEncoder());
-	                     ch.pipeline().addLast(new GameServerSimpleHandler());
+	                     ch.pipeline().addLast(new ChannelMessageHandler());
 	                 }
 	             });
 	            serverBootstrap.bind(port);
@@ -65,8 +66,7 @@ public class GameServer {
 	    }
 	    
 	    private static void registryMessage() {
-			MessageRegistryService.register(101101, CSTestMessage.class, GameServerSimpleHandler.class);		
-
+			MessageRegistryService.register(101101, CSTestMessage.class, CSTestHandler.class);		
 		}
 
 	    public static void main(String[] args) throws Exception {

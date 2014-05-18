@@ -34,13 +34,11 @@ public class NettySession implements ISession{
 
 	@Override
 	public void setAttribute(String key, Object obj) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public Object getAttribute(String key) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

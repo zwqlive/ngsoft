@@ -10,7 +10,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 import org.ngsoft.core.netty.config.ServerConfig;
-import org.ngsoft.core.netty.handler.ServerChannelHandler;
+import org.ngsoft.core.netty.handler.ChannelMessageHandler;
 
 public class NettyServer {
 	
@@ -36,7 +36,7 @@ public class NettyServer {
 		.group(parentGroup,childGroup).childHandler(new ChannelInitializer<SocketChannel>() {
 			@Override
 			protected void initChannel(SocketChannel ch) throws Exception {
-				ch.pipeline().addLast(new ServerChannelHandler());
+				ch.pipeline().addLast(new ChannelMessageHandler());
 			}
 		}).option(ChannelOption.TCP_NODELAY, true)
 		.childOption(ChannelOption.SO_KEEPALIVE, true);
