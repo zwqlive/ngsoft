@@ -17,9 +17,9 @@ public class ServerProtocolEncoder extends MessageToByteEncoder<IMessage>{
 	}
 	
 	private EmbeddedChannel encoder;
-	private int maxSize=1024;
+	private int maxSize=10240;
 	//一般512
-	private int zipSize=512;
+	private int zipSize=5120;
 	
 	public int getMaxSize() {
 		return maxSize;
