@@ -3,7 +3,17 @@ package org.ngsoft.core.script.loader;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import org.apache.log4j.Logger;
+
+/**
+ * 
+ * @author will
+ * @date 2015年1月25日 下午2:44:16
+ *
+ */
 public class ScriptClassLoader extends URLClassLoader {
+	
+	private static Logger log = Logger.getLogger(ScriptClassLoader.class);
 	
 	public ScriptClassLoader(URL[] urls) {
 		super(urls);
@@ -17,45 +27,23 @@ public class ScriptClassLoader extends URLClassLoader {
 			try {
 				clasz = super.findSystemClass(name);
 			} catch (ClassNotFoundException e) {
-				
+				log.error("load class err!",e);
 			}
 		}
 		if (clasz == null) {
 			try {
 				clasz = super.findSystemClass(name);
 			} catch (ClassNotFoundException e) {
-				
+				log.error("load class err!",e);
 			}
 		}
 		if (clasz == null) {
 			try {
-//				String path = name.replace('.', '/').concat(".class");
-//				System.out.println(path);
-//				path = "script_classes/serverscript/ScriptEntry.class";
-//				File entryFile = new File(path);
-//				try {
-//					InputStreamReader reader = new InputStreamReader(new FileInputStream(entryFile));
-//					BufferedReader bufferReader = new BufferedReader(reader);
-//					System.out.println(reader);
-//					try {
-//						int index = 0;
-//						while((index = bufferReader.read())>0){
-//							System.out.println(bufferReader.readLine());
-//						}
-//					} catch (IOException e) {
-//						e.printStackTrace();
-//					}
-//				} catch (FileNotFoundException e) {					
-//					e.printStackTrace();
-//				}
-//				URL res = super.findResource(path);
-//				System.out.println(res);
 				clasz = super.findClass(name);
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+				log.error("load class err!",e);
 			}
 		}
-
 		if (resolve) {
 			resolveClass(clasz);
 		}

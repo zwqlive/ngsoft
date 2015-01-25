@@ -20,6 +20,7 @@ public class CSTestHandler extends MessageHandler<CSTestMessage> {
 			someInfo.setName("someInfoName");
 			scMsg.setSomeInfo(someInfo);
 			sendMessage(scMsg);
+			
 		}
 	}
 
