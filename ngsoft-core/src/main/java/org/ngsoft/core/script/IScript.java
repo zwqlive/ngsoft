@@ -7,5 +7,7 @@ package org.ngsoft.core.script;
  *
  */
 public interface IScript {
+	
 	void init();
+	
 }

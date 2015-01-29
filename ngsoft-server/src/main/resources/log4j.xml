@@ -147,8 +147,8 @@
 		<level value="error" />
 	</logger>
 	<root>
-		<level value="info" />
-                <appender-ref ref="CONSOLE" />
+		<level value="debug" />
+         <appender-ref ref="CONSOLE" />
 		<appender-ref ref="AsyncFileAppender" />
 	</root>
 </log4j:configuration>

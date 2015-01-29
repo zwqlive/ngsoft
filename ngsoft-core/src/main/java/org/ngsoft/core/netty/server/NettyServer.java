@@ -9,13 +9,22 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
+import org.ngsoft.core.common.Loggers;
 import org.ngsoft.core.netty.config.ServerConfig;
 import org.ngsoft.core.netty.handler.ChannelMessageHandler;
+import org.slf4j.Logger;
 
 public class NettyServer {
 	
-	private ServerConfig serverConfig;
+	private static Logger logger = Loggers.MSG_LOGGER;
 	
+	private ServerConfig serverConfig;
+	//服务器主线程
+	private Thread serverMainThread;
+	
+	public NettyServer(){
+		serverMainThread = new Thread(this.getClass().getSimpleName());
+	}
 	
 	public ServerConfig getServerConfig() {
 		return serverConfig;
@@ -29,6 +38,9 @@ public class NettyServer {
 		if(serverConfig == null){
 			throw new NullPointerException("serverConfig");
 		}
+		//启动主线程
+		serverMainThread.start();
+		//监听链接
 		ServerBootstrap bootstrap = new ServerBootstrap();
 		EventLoopGroup parentGroup = new NioEventLoopGroup();
 		EventLoopGroup childGroup = new NioEventLoopGroup();
@@ -47,9 +59,11 @@ public class NettyServer {
 		} catch (InterruptedException e) {
 			childGroup.shutdownGracefully();
 			parentGroup.shutdownGracefully();
-			e.printStackTrace();
+			logger.error("server start failed!",e);
 		}
 	}
+	
+	
 	
 	public static void main(String[] args){
 		ServerConfig config = new ServerConfig();

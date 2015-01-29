@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 
 import org.ngsoft.core.service.MessageRegistryService;
 import org.ngsoft.robot.command.ClientTestCommand;
+import org.ngsoft.robot.command.GmCommand;
 import org.ngsoft.robot.handler.ClientHandler;
 import org.ngsoft.robot.handler.SCTestHandler;
 import org.ngsoft.robot.message.SCTestMessage;
@@ -33,6 +34,9 @@ public class RobotManager {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 			try {
 				String cmd = reader.readLine();
+				if(cmd==null || cmd.trim().isEmpty()){
+					continue;
+				}
 				if ("quit".equals(cmd)) {
 					client.disconnect();
 					break;
@@ -40,6 +44,12 @@ public class RobotManager {
 					ClientTestCommand testCommand = new ClientTestCommand();
 					testCommand.setContext(client.context());
 					testCommand.execute();
+				}else if(cmd.startsWith("$gm") && cmd.length()>4){					
+					GmCommand gmCmd = new GmCommand();
+					String commandText = cmd.substring(4, cmd.length());
+					gmCmd.setCommandText(commandText);
+					gmCmd.setContext(client.context());
+					gmCmd.execute();
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

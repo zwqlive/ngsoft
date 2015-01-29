@@ -13,7 +13,9 @@ import io.netty.handler.logging.LoggingHandler;
 import org.ngsoft.core.netty.codec.ServerProtocolFactory;
 import org.ngsoft.core.netty.handler.ChannelMessageHandler;
 import org.ngsoft.core.service.MessageRegistryService;
+import org.ngsoft.game.test.handler.CSGmCommandHandler;
 import org.ngsoft.game.test.handler.CSTestHandler;
+import org.ngsoft.game.test.message.CSGmCommandMessage;
 import org.ngsoft.game.test.message.CSTestMessage;
 
 public class GameServer {
@@ -66,7 +68,8 @@ public class GameServer {
 	    }
 	    
 	    private static void registryMessage() {
-			MessageRegistryService.register(101101, CSTestMessage.class, CSTestHandler.class);		
+			MessageRegistryService.register(101101, CSTestMessage.class, CSTestHandler.class);
+			MessageRegistryService.register(101102, CSGmCommandMessage.class, CSGmCommandHandler.class);
 		}
 
 	    public static void main(String[] args) throws Exception {

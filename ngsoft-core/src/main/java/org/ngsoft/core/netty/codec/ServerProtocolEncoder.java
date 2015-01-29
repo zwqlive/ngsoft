@@ -74,3 +74,4 @@ public class ServerProtocolEncoder extends MessageToByteEncoder<IMessage>{
 	}
 
 }
+

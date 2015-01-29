@@ -19,66 +19,59 @@ import javax.tools.SimpleJavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
+import org.apache.log4j.Logger;
 import org.ngsoft.core.script.loader.ScriptLoader;
-//	private ScriptClassLoader scriptClassLoader;
 
 public class CommonCompiler implements ICompiler{
+	
+	private static Logger log = Logger.getLogger(CommonCompiler.class);
+	
 	private String classpath = "";
 	private String sourcepath="script";
 	private String classFileOutPath="script-bin";
+	
 	@Override
 	public void compile() {
 		JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
 		DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
 		StandardJavaFileManager javaFileManager = javaCompiler.getStandardFileManager(diagnostics, null,Charset.forName("utf-8"));
 		ArrayList<String> compileOptions = new ArrayList<String>();
-		
 		compileOptions.add("-encoding");
 		compileOptions.add("UTF-8");
-		
 		compileOptions.add("-classpath");
 		StringBuilder localStringBuilder = new StringBuilder();
-		
-		
 		URLClassLoader	urlClassLoader = (URLClassLoader)this.getClass().getClassLoader();
-		
 		for(URL url : urlClassLoader.getURLs()){
 			String str = url.getFile();
 		    localStringBuilder.append(str).append(File.pathSeparator);
 		}
 		this.classpath = localStringBuilder.toString();
 		compileOptions.add(this.classpath);
-		
 		compileOptions.add("-sourcepath");
 		compileOptions.add(this.sourcepath);
-		
 		compileOptions.add("-d");
+		
 		String sourceUrl = ScriptLoader.class.getProtectionDomain().getCodeSource().getLocation().toString()+this.classFileOutPath;
-		System.out.println(sourceUrl);
+		log.debug(sourceUrl);
 		String basePath="";
 		try {
 			basePath = new File("").getCanonicalFile().getAbsolutePath();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("");
 		}
-		System.out.println(basePath+File.separator+classFileOutPath);
+		log.debug(basePath+File.separator+classFileOutPath);
 		compileOptions.add(basePath+File.separator+classFileOutPath);
 		
 		compileOptions.add("-g");
 		final String scriptPath = basePath+"\\script\\serverscript\\test\\ScriptB.java";
-		System.out.println(scriptPath);
-		//javaCompiler.run(null, null, null, scriptPath);
+		log.debug(scriptPath);
 		ArrayList<SimpleJavaFileObject> compilationUnits = new ArrayList<SimpleJavaFileObject>();
-		
-		
 		File entrySourceFile = new File("script/serverscript/ScriptEntry.java");
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new InputStreamReader(new FileInputStream(entrySourceFile),Charset.forName("utf-8")));
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			log.error(e1);
 		}
 		String line = "";
 		StringBuilder sbSourceContent = new StringBuilder();
@@ -87,26 +80,23 @@ public class CommonCompiler implements ICompiler{
 				sbSourceContent.append(line);
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e);
 		}
 		try {
 			compilationUnits.add(new StringJavaFileObject(new File("script/serverscript/ScriptEntry.java").getCanonicalFile().toURI(),sbSourceContent.toString()));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e);
 		}
 		JavaCompiler.CompilationTask compilationTask = javaCompiler.getTask(null, javaFileManager, diagnostics, compileOptions, null,compilationUnits );
 		boolean result = compilationTask.call();
 		try {
 			javaFileManager.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e);
 		}
-		System.out.println(result);
-		
+		log.debug(result);
 	}
+	
 	/**
 	 * 
 	 * @author will
@@ -121,6 +111,7 @@ public class CommonCompiler implements ICompiler{
 			content = sourceContent;
 		}
 
+		@Override
 		public CharSequence getCharContent(boolean ignoreEncodingErrors) throws IOException {
 			return content;
 		}

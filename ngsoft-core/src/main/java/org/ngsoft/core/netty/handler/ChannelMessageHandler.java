@@ -15,10 +15,12 @@ public class ChannelMessageHandler extends ChannelHandlerAdapter{
 	private static Logger logger = Loggers.MSG_LOGGER;
 	
 	
+	@SuppressWarnings("unchecked")
 	@Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if(msg instanceof IMessage){
     		IMessage message = (IMessage)msg;
+			@SuppressWarnings("rawtypes")
 			IMessageHandler handler = MessageRegistryService.getHandler(message.getId());
     		if(handler!=null){
     			ISession session = new NettySession(ctx);
