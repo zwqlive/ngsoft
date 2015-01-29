@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="script" default="compile" basedir=".">
+    <property name="dest.dir" value="script_classes" />
+    <property name="src.dir" value="script" />
+	<property name="run.dir" value="bin" />
+    <target name="init">
+        <mkdir dir="${dest.dir}" />
+    </target>
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${dest.dir}" includeantruntime="on"></javac>
+    	<!-- 
+    	<copydir dest="${run.dir}" src="${dest.dir}"></copydir>
+    	-->
+    </target>
+    <target name="clean">
+        <delete dir="${dest.dir}" />
+    </target>
+</project>

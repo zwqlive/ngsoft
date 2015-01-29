@@ -47,7 +47,7 @@ public class ServerProtocolDecoder extends ByteToMessageDecoder {
 			message.read(in);
 			out.add(message);
 		}
-		decoder.writeInbound(in);
+		//decoder.writeInbound(in);
 	}
 	
 	public static void main(String[] args){

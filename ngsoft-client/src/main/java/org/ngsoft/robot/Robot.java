@@ -21,6 +21,7 @@ import org.ngsoft.robot.handler.ClientHandler;
  * 
  */
 public class Robot implements IClient {
+	
 	private Bootstrap bootstrap;
 	private volatile boolean isConnected=false;
 	private ChannelHandlerContext context;
@@ -30,6 +31,7 @@ public class Robot implements IClient {
 		bootstrap = new Bootstrap();
 		messageHandler = new ChannelMessageHandler();
 	}
+	
 	@Override
 	public IClient connect(String host, int port) {
 		if(isConnected){
@@ -64,7 +66,6 @@ public class Robot implements IClient {
 		if(bootstrap==null){
 			return;
 		}
-//		bootstrap.
 		isConnected = false;
 		
 	}

@@ -10,6 +10,15 @@ import org.ngsoft.core.common.Loggers;
 import org.ngsoft.core.message.IMessage;
 import org.ngsoft.core.message.Message;
 
+/**
+ * 协议编码器
+ * 
+ * @author will
+ * @date 2014年12月31日 下午11:22:45
+ * -------------------------------------------------------------
+ * msgid:4bit + msgsize:4bit + msgbody
+ * 
+ */
 public class ServerProtocolEncoder extends MessageToByteEncoder<IMessage>{
 	
 	public ServerProtocolEncoder(){
@@ -17,9 +26,10 @@ public class ServerProtocolEncoder extends MessageToByteEncoder<IMessage>{
 	}
 	
 	private EmbeddedChannel encoder;
-	private int maxSize=1024;
-	//一般512
-	private int zipSize=512;
+	// 1m
+	private int maxSize=1024000;
+	//一般512k
+	private int zipSize=512000;
 	
 	public int getMaxSize() {
 		return maxSize;

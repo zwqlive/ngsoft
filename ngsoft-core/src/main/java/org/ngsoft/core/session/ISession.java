@@ -19,4 +19,6 @@ public interface ISession {
 	void setAttribute(String key,Object obj);
 	
 	Object getAttribute(String key);
+	
+	void close();
 }

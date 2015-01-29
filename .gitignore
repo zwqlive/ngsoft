@@ -6,3 +6,5 @@ logs/
 *.class
 *.bak
 /bin
+
+.metadata/

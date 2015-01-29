@@ -26,6 +26,6 @@
       <groupId>com.ngsoft</groupId>
       <artifactId>ngsoft-core</artifactId>
       <version>${project.version}</version>
-    </dependency>
+    </dependency>    
   </dependencies>
 </project>
