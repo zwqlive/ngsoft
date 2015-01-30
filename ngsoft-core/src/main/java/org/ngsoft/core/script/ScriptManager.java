@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.ngsoft.core.script.loader.ScriptLoader;
+
 /**
  * 脚本管理器
  * TODO:will@可以考虑使用spring的ioc来管理
@@ -16,6 +18,10 @@ public class ScriptManager {
 	
 	private ConcurrentHashMap<Class<?>, List<IScript>> scripts = new ConcurrentHashMap<Class<?>, List<IScript>>();
 	
+	private ScriptConfig config;
+	
+	private ScriptLoader loader = new ScriptLoader();
+	
 	private ScriptManager(){
 		
 	}
@@ -24,6 +30,23 @@ public class ScriptManager {
 	
 	public static ScriptManager getInstance(){
 		return instance;
+	}
+
+	public ScriptConfig getConfig() {
+		return config;
+	}
+
+
+
+	public void setConfig(ScriptConfig config) {
+		this.config = config;
+	}
+
+
+
+	public void initScripts(){
+		clear();
+		loader.load(config);
 	}
 	
 	public void clear(){
@@ -37,7 +60,7 @@ public class ScriptManager {
 	 */
 	public void registerScript(IScript script){
 		//TODO:will@防止多次注册
-		Class<?>[] interfaces = getClass().getInterfaces();
+		Class<?>[] interfaces = script.getClass().getInterfaces();
 		for(Class<?> clasz : interfaces){
 			if(!scripts.containsKey(clasz)){
 				scripts.put(clasz, new ArrayList<IScript>());

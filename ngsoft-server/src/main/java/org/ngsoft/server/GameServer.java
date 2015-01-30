@@ -10,8 +10,12 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
+import java.io.File;
+
 import org.ngsoft.core.netty.codec.ServerProtocolFactory;
 import org.ngsoft.core.netty.handler.ChannelMessageHandler;
+import org.ngsoft.core.script.ScriptConfig;
+import org.ngsoft.core.script.ScriptManager;
 import org.ngsoft.core.service.MessageRegistryService;
 import org.ngsoft.game.test.handler.CSGmCommandHandler;
 import org.ngsoft.game.test.handler.CSTestHandler;
@@ -74,6 +78,17 @@ public class GameServer {
 
 	    public static void main(String[] args) throws Exception {
 	    	registryMessage();
+	    	String realPath = GameServer.class.getClassLoader().getResource("").getFile();
+	        File file = new File(realPath);
+	        realPath = file.getAbsolutePath();
+	        String baseScriptPath = realPath+"../../../script";
+	        baseScriptPath = new File(baseScriptPath).getCanonicalFile().getAbsolutePath();
+	    	ScriptConfig scriptConfig = new ScriptConfig();
+	    	scriptConfig.setDir(baseScriptPath+"/org/ngsoft/script/ScriptEntry.class");
+	    	scriptConfig.setScriptBaseDir(baseScriptPath);
+	    	scriptConfig.setEntryScript("org.ngsoft.script.ScriptEntry");
+	    	ScriptManager.getInstance().setConfig(scriptConfig);
+	    	ScriptManager.getInstance().initScripts();
 	        int port=8020;	        
 	        new GameServer(port).start();
 	    }
