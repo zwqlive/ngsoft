@@ -1,16 +1,17 @@
 package org.ngsoft.core.script.loader;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.ngsoft.core.script.IScript;
+import org.ngsoft.core.script.IScriptEntry;
 import org.ngsoft.core.script.ScriptConfig;
 import org.ngsoft.core.script.ScriptLoadResult;
-
 
 /**
  * 脚本加载类
@@ -19,86 +20,123 @@ import org.ngsoft.core.script.ScriptLoadResult;
  *
  */
 public class ScriptLoader {
-	
+
 	private static Logger log = Logger.getLogger(ScriptLoader.class);
-	
-	private ScriptLoader(){}
-	private static ScriptLoader instance = new ScriptLoader();
-	public static ScriptLoader getLoader(){
-		return instance;
-	}
-	
-	private URLClassLoader classLoader;
-	private ScriptConfig config;
-	
+
+	private URLClassLoader classLoader = null;
+
 	/**
 	 * 加载所有脚本class
 	 * 
 	 * @param scriptConfig
 	 */
-	public ScriptLoadResult load(ScriptConfig scriptConfig){
-		if(scriptConfig == null){
+	public ScriptLoadResult load(ScriptConfig scriptConfig) {
+		String scriptDir = scriptConfig.getDir();
+		String entryScript = scriptConfig.getEntryScript();
+		String baseScriptDir = scriptConfig.getScriptBaseDir();
+		if (scriptDir == null || scriptDir.isEmpty() || entryScript == null
+				|| entryScript.isEmpty()) {
 			throw new IllegalArgumentException("scriptconfig can not be null!");
 		}
-		this.config = scriptConfig;
-		URL url = this.getClass().getClassLoader().getResource(config.getDir());
-		log.info("script location:"+url);
-		URL url2 = this.getClass().getProtectionDomain().getCodeSource().getLocation();
-		log.info("current code source location:"+url2);
-		URLClassLoader tempClassLoader = new URLClassLoader(new URL[]{url});
+		// URL url = this.getClass().getClassLoader().getResource(scriptDir);
+		// log.info("script location:"+url);
+		URL url = this.getClass().getClassLoader().getResource("");
+		ClassLoader mainLoader = this.getClass().getClassLoader();
+		URL scriptUrl = null;
 		ScriptLoadResult result = new ScriptLoadResult();
 		try {
-			//TODO:will@只需要加载入口类即可，入口类中引用其他所有脚本，会顺带加载，不需要循环加载一遍
-			recuteLoadClass(tempClassLoader, new File(config.getDir()),"");
-		} catch (Exception e) {
-			log.error(e);
-			result.setErrMsg(e.getMessage());
-			result.setResultCode(1);
+			scriptUrl = new File(baseScriptDir).toURI().toURL();
+			URL[] urls = new URL[] { url, scriptUrl };
+			if (mainLoader instanceof URLClassLoader) {
+				urls = ((URLClassLoader) mainLoader).getURLs();
+				List<URL> urlList = new ArrayList<URL>();
+				urlList.addAll(Arrays.asList(urls));
+				urlList.add(scriptUrl);
+				urls = urlList.toArray(urls);
+			}
+			log.info("script location:" + url);
+			// URL url2 =
+			// this.getClass().getProtectionDomain().getCodeSource().getLocation();
+			// log.info("current code source location:"+url2);
+			URLClassLoader tempClassLoader = new ScriptClassLoader(urls);
+			
+			try {
+				// TODO:will@只需要加载入口类即可，入口类中引用其他所有脚本，会顺带加载，不需要循环加载一遍
+				recuteLoadClass(tempClassLoader, new File(scriptDir),
+						"org.ngsoft.script.ScriptEntry");
+			} catch (Exception e) {
+				log.error(e);
+				result.setErrMsg(e.getMessage());
+				result.setResultCode(1);
+			}
+			classLoader = tempClassLoader;
+			result.setResultCode(0);
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		classLoader = tempClassLoader;
-		result.setResultCode(0);
 		return result;
 	}
-	
+
 	/**
 	 * 加载class类文件
 	 * 
 	 * @param file
 	 * @param className
 	 */
-	private void recuteLoadClass(ClassLoader loader, File file, String className) throws Exception{
-		try{
-		if(file.isDirectory()){
-			String currentPackagePrefix = "";
-			if(className!=null && !className.isEmpty()){
-				currentPackagePrefix=className+".";
-			}
-			for (File child : file.listFiles()) {
-				String clsName = currentPackagePrefix + child.getName().replace(".class", "");
-				recuteLoadClass(loader, child, clsName);
-			}
-			return;
-		}		
-		String fileName = file.getName();
-		int lastIndex = fileName.lastIndexOf(".");
-		if(lastIndex == -1){
-			return;
-		}
-		String fileExt = fileName.substring(lastIndex);
-		if(!".class".equals(fileExt)){
-			return;
-		}
+	private void recuteLoadClass(ClassLoader loader, File file, String className)
+			throws Exception {
 		try {
-			loader.loadClass(className);
-		} catch (ClassNotFoundException e) {
-			log.error("load class err. classname="+className,e);
-		}
-		}catch(Exception ex){
-			throw new Exception("load class err. classname="+className+",msg:"+ex.getMessage(),ex);
+			if (file == null) {
+				return;
+			}
+			if (!file.exists()) {
+				System.out.println(file.getAbsolutePath());
+				return;
+			}
+			if (file.isDirectory()) {
+				String currentPackagePrefix = "";
+				if (className != null && !className.isEmpty()) {
+					currentPackagePrefix = className + ".";
+				}
+				for (File child : file.listFiles()) {
+					String clsName = currentPackagePrefix
+							+ child.getName().replace(".class", "");
+					recuteLoadClass(loader, child, clsName);
+				}
+				return;
+			}
+
+			String fileName = file.getName();
+			int lastIndex = fileName.lastIndexOf(".");
+			if (lastIndex == -1) {
+				return;
+			}
+			String fileExt = fileName.substring(lastIndex);
+			if (!".class".equals(fileExt)) {
+				return;
+			}
+			try {
+				Class<?> loadClass = loader.loadClass(className);
+				if (loadClass != null) {
+//					Object obj = loadClass.newInstance();
+//					if (obj instanceof IScriptEntry) {
+//						IScriptEntry entry = (IScriptEntry) obj;
+//						entry.init();
+//					}
+				} else {
+					// 出错了
+				}
+			} catch (ClassNotFoundException e) {
+				log.error("load class err. classname=" + className, e);
+			}
+		} catch (Exception ex) {
+			throw new Exception("load class err. classname=" + className
+					+ ",msg:" + ex.getMessage(), ex);
 		}
 	}
-	
-	public void reload(){
-		
+
+	public void reload() {
+
 	}
 }

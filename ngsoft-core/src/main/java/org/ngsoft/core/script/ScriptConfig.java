@@ -11,6 +11,8 @@ public class ScriptConfig {
 	private String dir;
 	// 入口类
 	private String entryScript;
+	// 脚本根目录
+	private String scriptBaseDir;
 
 	public String getDir() {
 		return dir;
@@ -28,5 +30,12 @@ public class ScriptConfig {
 		this.entryScript = entryScript;
 	}
 
+	public String getScriptBaseDir() {
+		return scriptBaseDir;
+	}
+
+	public void setScriptBaseDir(String scriptBaseDir) {
+		this.scriptBaseDir = scriptBaseDir;
+	}
 	
 }
