@@ -19,7 +19,7 @@ public class GameServerSimpleHandler extends ChannelHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if(msg instanceof IMessage){
     		IMessage message = (IMessage)msg;
-    		IMessageHandler handler = MessageRegistryService.getHandler(message.getId());
+    		IMessageHandler<? extends IMessage> handler = MessageRegistryService.getHandler(message.getClass());
     		if(handler!=null){
     			handler.handle(message);
     		}

@@ -59,7 +59,7 @@ public class ClientHandler extends MessageHandler<SCTestMessage>{
 //	}
 
 	@Override
-	public void handle(SCTestMessage message) {
+	public void doHandle(SCTestMessage message) {
 		// TODO Auto-generated method stub
 		
 	}

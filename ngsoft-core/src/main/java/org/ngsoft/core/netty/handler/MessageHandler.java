@@ -20,4 +20,10 @@ public abstract class MessageHandler<T extends IMessage> implements IMessageHand
 		return this;
 	}
 
+	@Override
+	public void handle(IMessage message) {
+		doHandle((T)message);
+	}
+	
+	public abstract void doHandle(T msg);
 }

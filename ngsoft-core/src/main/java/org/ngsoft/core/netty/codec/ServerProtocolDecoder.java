@@ -9,7 +9,7 @@ import io.netty.handler.codec.compression.ZlibCodecFactory;
 import java.util.List;
 
 import org.ngsoft.core.common.Loggers;
-import org.ngsoft.core.message.Message;
+import org.ngsoft.core.message.IMessage;
 import org.ngsoft.core.service.MessageRegistryService;
 import org.slf4j.Logger;
 
@@ -38,7 +38,7 @@ public class ServerProtocolDecoder extends ByteToMessageDecoder {
 		if(compress == 1){
 			decoder.writeOutbound(in.retain());
 		}else{
-			Message message = MessageRegistryService.getMessage(msgId);
+			IMessage message = MessageRegistryService.getMessage(msgId);
 			if(message==null){
 				logger.error("can not recognize message,msgId="+msgId);
 				//需要处理剩下的字节

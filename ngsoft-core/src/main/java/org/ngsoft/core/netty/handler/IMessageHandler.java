@@ -5,7 +5,7 @@ import org.ngsoft.core.session.ISession;
 
 public interface IMessageHandler<T extends IMessage> {
 
-	void handle(T message);
+	void handle(IMessage message);
 
 	ISession session();
 

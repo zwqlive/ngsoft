@@ -8,7 +8,7 @@ import org.ngsoft.game.test.transobj.SomeInfo;
 public class CSTestHandler extends MessageHandler<CSTestMessage> {
 
 	@Override
-	public void handle(CSTestMessage message) {
+	public void doHandle(CSTestMessage message) {
 		if (message != null) {
 			System.out.println("playerId:" + message.getPlayerId());
 			SCTestMessage scMsg = new SCTestMessage();

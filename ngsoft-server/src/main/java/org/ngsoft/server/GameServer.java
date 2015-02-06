@@ -72,8 +72,8 @@ public class GameServer {
 	    }
 	    
 	    private static void registryMessage() {
-			MessageRegistryService.register(101101, CSTestMessage.class, CSTestHandler.class);
-			MessageRegistryService.register(101102, CSGmCommandMessage.class, CSGmCommandHandler.class);
+			MessageRegistryService.register(new CSTestMessage(), CSTestHandler.class);
+			MessageRegistryService.register(new CSGmCommandMessage(), CSGmCommandHandler.class);
 		}
 
 	    public static void main(String[] args) throws Exception {

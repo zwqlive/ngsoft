@@ -12,7 +12,7 @@ public class CSGmCommandHandler extends MessageHandler<CSGmCommandMessage> {
 	private static Logger log = Logger.getLogger(CSGmCommandHandler.class);
 	
 	@Override
-	public void handle(CSGmCommandMessage message) {
+	public void doHandle(CSGmCommandMessage message) {
 		if (message != null) {
 			String gmCmd = message.getCommand();
 			if("scriptTest".equalsIgnoreCase(gmCmd)){
@@ -27,6 +27,7 @@ public class CSGmCommandHandler extends MessageHandler<CSGmCommandMessage> {
 		}
 	}
 
+	
 	
 
 }

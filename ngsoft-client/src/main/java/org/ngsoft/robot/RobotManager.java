@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import org.ngsoft.core.service.MessageRegistryService;
 import org.ngsoft.robot.command.ClientTestCommand;
 import org.ngsoft.robot.command.GmCommand;
-import org.ngsoft.robot.handler.ClientHandler;
 import org.ngsoft.robot.handler.SCTestHandler;
 import org.ngsoft.robot.message.SCTestMessage;
 
@@ -20,7 +19,7 @@ import org.ngsoft.robot.message.SCTestMessage;
 public class RobotManager {
 
 	private static void registryMessage() {
-		MessageRegistryService.register(101201, SCTestMessage.class, SCTestHandler.class);
+		MessageRegistryService.register(new SCTestMessage(), SCTestHandler.class);
 	}
 
 	public static void main(String[] args) {
