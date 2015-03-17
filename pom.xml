@@ -9,10 +9,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>pom</packaging>
 	<modules>
-		<module>ngsoft-core</module>
-		<module>ngsoft-server</module>
-		<module>ngsoft-client</module>
-		<module>ngsoft-management</module>
+		<module>ng-core</module>
+		<module>ng-server</module>
+		<module>ng-client</module>
+		<module>ng-web</module>
 	</modules>
 
 	<name>ngsoft</name>
