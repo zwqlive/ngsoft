@@ -1,4 +1,4 @@
-package org.ngsoft.core.session;
+package org.ngsoft.core.netty.Session;
 
 import io.netty.channel.ChannelHandlerContext;
 
@@ -6,13 +6,14 @@ import java.net.SocketAddress;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.ngsoft.core.message.IMessage;
+import org.ngsoft.core.session.ISession;
 
 /**
  * 
  * @author will
  *
  */
-public class NettySession implements ISession{
+public class NettySession implements ISession {
 	
 	private ConcurrentHashMap<String, Object> attributes = new ConcurrentHashMap<String, Object>();
 	public NettySession(ChannelHandlerContext ctx){

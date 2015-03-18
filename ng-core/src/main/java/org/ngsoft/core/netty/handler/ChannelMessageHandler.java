@@ -7,7 +7,7 @@ import org.ngsoft.core.common.Loggers;
 import org.ngsoft.core.message.IMessage;
 import org.ngsoft.core.service.MessageRegistryService;
 import org.ngsoft.core.session.ISession;
-import org.ngsoft.core.session.NettySession;
+import org.ngsoft.core.netty.Session.NettySession;
 import org.slf4j.Logger;
 
 public class ChannelMessageHandler extends ChannelHandlerAdapter{
