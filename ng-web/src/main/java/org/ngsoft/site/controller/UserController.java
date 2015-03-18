@@ -25,6 +25,7 @@ public class UserController extends Controller {
      * 添加用户
      */
     @Power(PowerEnum.user_add)
+    @Power(PowerEnum.user_del)
     public void addUser() {
         User user = new User();
         user.set("id", IdGenerator.getId());

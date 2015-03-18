@@ -1,4 +1,4 @@
-package org.ngsoft.core.utils.encrypt;
+package org.ngsoft.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

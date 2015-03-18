@@ -8,6 +8,7 @@ import java.lang.annotation.*;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE,ElementType.METHOD})
+@Repeatable(value=Powers.class)
 public @interface Power {
 
     PowerEnum value();
