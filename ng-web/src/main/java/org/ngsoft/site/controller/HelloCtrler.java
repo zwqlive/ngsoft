@@ -22,7 +22,7 @@ public class HelloCtrler extends Controller {
         //放入MethodModel
         IndexOfMethod method = new IndexOfMethod();
         setAttr("indexOf",method);
-        render("login.html");
+        render("login.ftl");
     }
 
 }

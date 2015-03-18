@@ -1,7 +1,7 @@
 package org.ngsoft.game.test.handler;
 
 import org.apache.log4j.Logger;
-import org.ngsoft.core.netty.handler.MessageHandler;
+import org.ngsoft.core.handler.MessageHandler;
 import org.ngsoft.script.java.IScript;
 import org.ngsoft.script.java.ScriptManager;
 import org.ngsoft.game.test.message.CSGmCommandMessage;

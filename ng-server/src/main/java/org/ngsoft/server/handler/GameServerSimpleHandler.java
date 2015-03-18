@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ngsoft.core.message.IMessage;
-import org.ngsoft.core.netty.handler.IMessageHandler;
+import org.ngsoft.core.handler.IMessageHandler;
 import org.ngsoft.core.service.MessageRegistryService;
 
 public class GameServerSimpleHandler extends ChannelHandlerAdapter {

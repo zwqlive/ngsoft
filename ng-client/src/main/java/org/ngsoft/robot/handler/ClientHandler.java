@@ -1,12 +1,8 @@
 package org.ngsoft.robot.handler;
 
-import io.netty.channel.ChannelHandlerContext;
-
-import org.ngsoft.core.message.Message;
-import org.ngsoft.core.netty.handler.IMessageHandler;
-import org.ngsoft.core.netty.handler.MessageHandler;
+import org.ngsoft.core.handler.IMessageHandler;
+import org.ngsoft.core.handler.MessageHandler;
 import org.ngsoft.core.session.ISession;
-import org.ngsoft.robot.message.CSTestMessage;
 import org.ngsoft.robot.message.SCTestMessage;
 
 public class ClientHandler extends MessageHandler<SCTestMessage>{

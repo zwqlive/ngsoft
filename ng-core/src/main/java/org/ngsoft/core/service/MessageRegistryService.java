@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.ngsoft.core.common.Loggers;
 import org.ngsoft.core.message.IMessage;
-import org.ngsoft.core.netty.handler.IMessageHandler;
+import org.ngsoft.core.handler.IMessageHandler;
 import org.slf4j.Logger;
 
 /**
@@ -39,9 +39,9 @@ public class MessageRegistryService {
 		try {
 			handlers.put(msgClass, handlerClass.newInstance());
 		} catch (InstantiationException e) {
-			logger.error("initial handler faild! ",e);
+			logger.error("initial handler failed! ",e);
 		} catch (IllegalAccessException e) {
-			logger.error("initial handler faild! ",e);
+			logger.error("initial handler failed! ",e);
 		}
 	}
 
@@ -54,9 +54,9 @@ public class MessageRegistryService {
 			}
 			return (M) msgClass.newInstance();
 		} catch (InstantiationException e) {
-			logger.error("initial message faild! ",e);
+			logger.error("initial message failed! ",e);
 		} catch (IllegalAccessException e) {
-			logger.error("initial message faild! ",e);
+			logger.error("initial message failed! ",e);
 		}
 		return null;
 	}
@@ -76,9 +76,9 @@ public class MessageRegistryService {
 			handlers.put(msgClass, handler);
 			return (H) handler;
 		} catch (InstantiationException e) {
-			logger.error("initial handler faild! ",e);
+			logger.error("initial handler failed! ",e);
 		} catch (IllegalAccessException e) {
-			logger.error("initial handler faild! ",e);
+			logger.error("initial handler failed! ",e);
 		}
 		return null;
 	}

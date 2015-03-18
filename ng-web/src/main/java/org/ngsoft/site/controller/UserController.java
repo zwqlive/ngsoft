@@ -18,7 +18,7 @@ public class UserController extends Controller {
     private static Logger log = Logger.getLogger(UserController.class);
 
     public void index(){
-        render("site/user.html");
+        render("site/user.ftl");
     }
 
     /**

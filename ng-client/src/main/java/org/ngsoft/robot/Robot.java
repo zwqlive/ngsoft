@@ -10,9 +10,9 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
+import org.ngsoft.core.message.IMessage;
 import org.ngsoft.core.netty.codec.ServerProtocolFactory;
-import org.ngsoft.core.netty.handler.ChannelMessageHandler;
-import org.ngsoft.robot.handler.ClientHandler;
+import org.ngsoft.core.netty.handler.NettyServerMessageHandler;
 
 /**
  * 机器人客户端
@@ -25,11 +25,11 @@ public class Robot implements IClient {
 	private Bootstrap bootstrap;
 	private volatile boolean isConnected=false;
 	private ChannelHandlerContext context;
-	private ChannelMessageHandler messageHandler;
+	private NettyServerMessageHandler messageHandler;
 	private Channel channel;
 	public Robot(){
 		bootstrap = new Bootstrap();
-		messageHandler = new ChannelMessageHandler();
+		messageHandler = new NettyServerMessageHandler(this);
 	}
 	
 	@Override
@@ -73,9 +73,14 @@ public class Robot implements IClient {
 	public ChannelHandlerContext context() {
 		return context;
 	}
+
 	@Override
 	public Channel channel() {
 		return channel;
 	}
 
+    @Override
+    public void resolve(IMessage message) {
+
+    }
 }

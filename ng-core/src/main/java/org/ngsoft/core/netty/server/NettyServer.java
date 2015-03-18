@@ -9,10 +9,15 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
+import org.ngsoft.core.action.IAction;
 import org.ngsoft.core.common.Loggers;
+import org.ngsoft.core.message.IMessage;
 import org.ngsoft.core.netty.config.ServerConfig;
-import org.ngsoft.core.netty.handler.ChannelMessageHandler;
+import org.ngsoft.core.netty.handler.NettyServerMessageHandler;
+import org.ngsoft.core.handler.IMessageDispatcher;
+import org.ngsoft.core.handler.ServerAction;
 import org.ngsoft.core.server.IServer;
+import org.ngsoft.core.server.thread.ServerThread;
 import org.slf4j.Logger;
 
 public class NettyServer implements IServer{
@@ -21,10 +26,12 @@ public class NettyServer implements IServer{
 	
 	private ServerConfig serverConfig;
 	//服务器主线程
-	private Thread serverMainThread;
+	private ServerThread serverMainThread;
+    //消息分发器
+    private IMessageDispatcher messageDispatcher;
 	
 	public NettyServer(){
-		serverMainThread = new Thread(this.getClass().getSimpleName());
+		serverMainThread = new ServerThread(this.getClass().getSimpleName());
 	}
 	
 	public ServerConfig getServerConfig() {
@@ -44,6 +51,7 @@ public class NettyServer implements IServer{
 		if(serverConfig == null){
 			throw new NullPointerException("serverConfig");
 		}
+        NettyServer server = this;
 		//启动主线程
 		serverMainThread.start();
 		//监听链接
@@ -54,7 +62,7 @@ public class NettyServer implements IServer{
 		.group(parentGroup,childGroup).childHandler(new ChannelInitializer<SocketChannel>() {
 			@Override
 			protected void initChannel(SocketChannel ch) throws Exception {
-				ch.pipeline().addLast(new ChannelMessageHandler());
+				ch.pipeline().addLast(new NettyServerMessageHandler(server));
 			}
 		}).option(ChannelOption.TCP_NODELAY, true)
 		.childOption(ChannelOption.SO_KEEPALIVE, true);
@@ -71,6 +79,16 @@ public class NettyServer implements IServer{
 
     @Override
     public void stop() {
+        serverMainThread.stop(false);
+    }
 
+    @Override
+    public void resolve(IMessage message) {
+        IAction action = new ServerAction(message);
+        if(messageDispatcher!=null){
+            if(messageDispatcher.dispatch(action))
+                return;
+        }
+        serverMainThread.addAction(action);
     }
 }

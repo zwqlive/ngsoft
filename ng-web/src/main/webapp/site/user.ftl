@@ -1,4 +1,4 @@
-<#include "../master.html">
+<#include "../master.ftl">
     <@layout js="site/user.js">
     <div ms-controller="ctrl">
     <form id="f_user" ms-submit="submit">

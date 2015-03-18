@@ -48,6 +48,7 @@ public class NettySession implements ISession {
 	@Override
 	public void close() {
 		handlerContext.disconnect();
+        handlerContext.close();
 	}
 	
 }

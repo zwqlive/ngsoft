@@ -1,6 +1,6 @@
 package org.ngsoft.robot.handler;
 
-import org.ngsoft.core.netty.handler.MessageHandler;
+import org.ngsoft.core.handler.MessageHandler;
 import org.ngsoft.robot.message.SCTestMessage;
 
 public class SCTestHandler extends MessageHandler<SCTestMessage>{

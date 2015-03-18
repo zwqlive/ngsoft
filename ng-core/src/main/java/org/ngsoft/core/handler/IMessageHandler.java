@@ -1,4 +1,4 @@
-package org.ngsoft.core.netty.handler;
+package org.ngsoft.core.handler;
 
 import org.ngsoft.core.message.IMessage;
 import org.ngsoft.core.session.ISession;

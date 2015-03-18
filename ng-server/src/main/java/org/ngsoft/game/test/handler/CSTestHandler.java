@@ -1,6 +1,6 @@
 package org.ngsoft.game.test.handler;
 
-import org.ngsoft.core.netty.handler.MessageHandler;
+import org.ngsoft.core.handler.MessageHandler;
 import org.ngsoft.game.test.message.CSTestMessage;
 import org.ngsoft.game.test.message.SCTestMessage;
 import org.ngsoft.game.test.transobj.SomeInfo;

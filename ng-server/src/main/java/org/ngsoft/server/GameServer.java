@@ -13,7 +13,8 @@ import io.netty.handler.logging.LoggingHandler;
 import java.io.File;
 
 import org.ngsoft.core.netty.codec.ServerProtocolFactory;
-import org.ngsoft.core.netty.handler.ChannelMessageHandler;
+import org.ngsoft.core.netty.handler.NettyServerMessageHandler;
+import org.ngsoft.core.netty.server.NettyServer;
 import org.ngsoft.script.java.ScriptConfig;
 import org.ngsoft.script.java.ScriptManager;
 import org.ngsoft.core.service.MessageRegistryService;
@@ -22,7 +23,7 @@ import org.ngsoft.game.test.handler.CSTestHandler;
 import org.ngsoft.game.test.message.CSGmCommandMessage;
 import org.ngsoft.game.test.message.CSTestMessage;
 
-public class GameServer {
+public class GameServer extends NettyServer{
 	 private final int port;
 
 	    public GameServer(int port) {
@@ -30,8 +31,9 @@ public class GameServer {
 	        serverBootstrap = new ServerBootstrap();
 	    }
 
-	    public void start() throws Exception {
-	        
+	    public void start() {
+	        super.start();
+            GameServer server = this;
 	    	EventLoopGroup bossGroup = new NioEventLoopGroup();
 	        EventLoopGroup workerGroup = new NioEventLoopGroup();
 	        try {
@@ -47,7 +49,7 @@ public class GameServer {
 	                 public void initChannel(SocketChannel ch) throws Exception {
 	                	 ch.pipeline().addLast(ServerProtocolFactory.getDecoder());
 	                	 ch.pipeline().addLast(ServerProtocolFactory.getEncoder());
-	                     ch.pipeline().addLast(new ChannelMessageHandler());
+	                     ch.pipeline().addLast(new NettyServerMessageHandler(server));
 	                 }
 	             });
 	            serverBootstrap.bind(port);
