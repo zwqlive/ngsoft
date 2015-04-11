@@ -1,4 +1,4 @@
-package org.ngsoft.server;
+package org.ngsoft.game.server;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

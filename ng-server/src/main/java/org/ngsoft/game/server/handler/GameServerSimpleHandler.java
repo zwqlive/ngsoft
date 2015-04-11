@@ -1,4 +1,4 @@
-package org.ngsoft.server.handler;
+package org.ngsoft.game.server.handler;
 
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
