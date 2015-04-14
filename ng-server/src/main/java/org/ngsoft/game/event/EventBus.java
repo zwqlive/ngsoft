@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * Created by will on 2015-3-20.
@@ -12,24 +13,20 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class EventBus {
 
     private static EventBus instance = new EventBus();
+    private Map<Integer, CopyOnWriteArraySet<IEvent>> eventPool = new ConcurrentHashMap<>();
 
-    private EventBus(){
+    private EventBus() {
 
     }
-    private Map<Integer, Set<IEvent>> eventPool = new ConcurrentHashMap<>();
 
     public static void register(IEvent event) {
-        Set<IEvent> evts = instance.eventPool.get(event.id());
+        CopyOnWriteArraySet<IEvent> evts = instance.eventPool.get(event.id());
         if (evts != null) {
-            synchronized (evts) {
                 evts.add(event);
-            }
         } else {
-            synchronized (instance.eventPool) {
-                evts = new HashSet<>();
+                evts = new CopyOnWriteArraySet<>();
                 evts.add(event);
                 instance.eventPool.put(event.id(), evts);
-            }
         }
     }
 
@@ -41,15 +38,11 @@ public final class EventBus {
         fire(type, null);
     }
 
-    public static <T extends EventArgs>  void fire(EventType type, T args) {
+    public static <T extends EventArgs> void fire(EventType type, T args) {
         Set<IEvent> events = instance.eventPool.get(type.getId());
         if (events == null) {
             return;
         }
-        events.forEach(
-                event -> {
-                    event.fire(args);
-                }
-        );
+        events.forEach(event -> event.fire(args));
     }
 }

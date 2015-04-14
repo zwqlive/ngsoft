@@ -1,6 +1,6 @@
-package org.ngsoft.game.log;
+package org.ngsoft.gamelog;
 
-import org.ngsoft.game.log.entity.BaseLogEntity;
+import org.ngsoft.gamelog.entity.BaseLogEntity;
 
 public class FileLogTask implements Runnable{
 	

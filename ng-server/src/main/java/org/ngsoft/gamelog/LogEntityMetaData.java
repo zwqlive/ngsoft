@@ -1,4 +1,4 @@
-package org.ngsoft.game.log;
+package org.ngsoft.gamelog;
 
 import org.ngsoft.db.util.ColumnInfo;
 

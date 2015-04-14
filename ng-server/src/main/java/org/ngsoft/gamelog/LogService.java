@@ -1,8 +1,7 @@
-package org.ngsoft.game.log;
+package org.ngsoft.gamelog;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -11,7 +10,7 @@ import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.ngsoft.game.log.entity.BaseLogEntity;
+import org.ngsoft.gamelog.entity.BaseLogEntity;
 
 public class LogService {
 	//参考size 10-20

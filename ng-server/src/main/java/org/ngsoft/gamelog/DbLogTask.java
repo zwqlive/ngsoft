@@ -1,8 +1,8 @@
-package org.ngsoft.game.log;
+package org.ngsoft.gamelog;
 
 import javax.sql.DataSource;
 
-import org.ngsoft.game.log.entity.BaseLogEntity;
+import org.ngsoft.gamelog.entity.BaseLogEntity;
 
 public class DbLogTask implements Runnable{
 	private BaseLogEntity logEntity;

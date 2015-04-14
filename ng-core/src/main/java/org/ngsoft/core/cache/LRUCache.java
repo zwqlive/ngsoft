@@ -1,6 +1,7 @@
 package org.ngsoft.core.cache;
 
 import java.io.Serializable;
+import java.lang.ref.WeakReference;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
@@ -8,24 +9,24 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Created by will on 2015-3-19.
  */
-public class LRUCache<K,V> implements ICache<K,V> {
+public class LRUCache<K ,V> implements ICache<K,V> {
 
-    private CacheMap<K,V> cache;
+    private CacheMap<K,WeakReference<?>> cache;
     private ReentrantLock lock;
 
     public LRUCache(int maxSize){
-        cache = new CacheMap<K,V>(maxSize);
+        cache = new CacheMap<K,WeakReference<?>>(maxSize);
         lock=new ReentrantLock();
     }
 
     @Override
     public void put(K key, V value) {
-        cache.put(key, value);
+        cache.put(key, new WeakReference<V>(value));
     }
 
     @Override
     public V get(K key) {
-        return cache.get(key);
+        return (V)cache.get(key).get();
     }
 
     @Override
