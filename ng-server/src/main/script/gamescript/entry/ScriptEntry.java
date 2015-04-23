@@ -1,6 +1,6 @@
-package org.ngsoft.script;
+package gamescript.entry;
 
-import org.ngsoft.script.game.TestScript;
+import gamescript.game.test.TestScript;
 import org.ngsoft.script.java.IScriptEntry;
 import org.ngsoft.script.java.ScriptManager;
 

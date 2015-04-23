@@ -1,4 +1,4 @@
-package org.ngsoft.script.game;
+package gamescript.game.test;
 
 import org.apache.log4j.Logger;
 import org.ngsoft.game.test.script.ITestScript;

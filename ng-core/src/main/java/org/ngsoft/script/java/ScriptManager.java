@@ -17,7 +17,7 @@ import org.ngsoft.script.java.loader.ScriptLoader;
  */
 public class ScriptManager {
 	
-	private ConcurrentHashMap<Class<?>, List<IScript>> scripts = new ConcurrentHashMap<Class<?>, List<IScript>>();
+	private ConcurrentHashMap<Class<?>, List<? extends IScript>> scripts = new ConcurrentHashMap<Class<?>, List<? extends IScript>>();
 	
 	private ScriptConfig config;
 	
@@ -60,30 +60,32 @@ public class ScriptManager {
 	 * @param script
 	 */
 	public void registerScript(IScript script){
-		//TODO:will@防止多次注册
 		Class<?>[] interfaces = script.getClass().getInterfaces();
 		for(Class<?> clasz : interfaces){
 			if(!scripts.containsKey(clasz)){
 				scripts.put(clasz, new ArrayList<IScript>());
 			}
-			scripts.get(clasz).add(script);
+            if(scripts.get(clasz).contains(script)){
+                throw new RuntimeException("register failed:this script has resigtered!");
+            }
+            ((ArrayList<IScript>)scripts.get(clasz)).add(script);
 		}
 	}
 	
 	/**
-	 * 获取收个实现类
+	 * 获取首个实现类
 	 * @param clasz
 	 * @return
 	 */
-	public IScript getHeadScript(Class<? extends IScript> clasz){
+	public <T extends IScript> T getFirstScript(Class<T> clasz){
 		if(!scripts.containsKey(clasz)){
 			return null;
 		}
-		List<IScript> list = scripts.get(clasz);
+		List<?> list = scripts.get(clasz);
 		if(list==null || list.isEmpty()){
 			return null;
 		}
-		return list.get(0);
+		return (T)list.get(0);
 	}
 	
 	/**
@@ -92,11 +94,11 @@ public class ScriptManager {
 	 * @param clasz
 	 * @return
 	 */
-	public List<IScript> getScripts(Class<? extends IScript> clasz){
+	public <T extends IScript> List<T> getScripts(Class<T> clasz){
 		if(!scripts.containsKey(clasz)){
 			return null;
 		}
-		List<IScript> list = scripts.get(clasz);
+		List<T> list = (List<T>) scripts.get(clasz);
 		return list;
 	}
 }
